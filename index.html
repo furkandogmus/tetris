@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smooth Tetris</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="main-menu" class="menu-container">
+        <h1>TETRIS</h1>
+        <div class="difficulty-selection">
+            <h2>Select Difficulty</h2>
+            <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+            <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+            <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+        </div>
+        <div class="difficulty-info">
+            <div class="info easy">
+                <h3>Easy</h3>
+                <p>- Slower piece drop speed</p>
+                <p>- More forgiving rotations</p>
+            </div>
+            <div class="info medium">
+                <h3>Medium</h3>
+                <p>- Standard speed</p>
+                <p>- Classic Tetris experience</p>
+            </div>
+            <div class="info hard">
+                <h3>Hard</h3>
+                <p>- Faster piece drop speed</p>
+                <p>- Quick level progression</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-container" class="game-container" style="display: none;">
+        <div class="game-info">
+            <div class="score">Score: <span id="score">0</span></div>
+            <div class="level">Level: <span id="level">1</span></div>
+            <div class="next-piece">
+                <h3>Next Piece:</h3>
+                <canvas id="nextPiece" width="100" height="100"></canvas>
+            </div>
+        </div>
+        <canvas id="tetris" width="300" height="600"></canvas>
+        <div class="controls">
+            <div class="controls-info">
+                <h3>Controls:</h3>
+                <p>← → : Move</p>
+                <p>↑ : Rotate</p>
+                <p>↓ : Soft Drop</p>
+                <p>Space : Hard Drop</p>
+                <p>ESC : Back to Menu</p>
+            </div>
+        </div>
+    </div>
+    <script src="tetris.js"></script>
+</body>
+</html> 
