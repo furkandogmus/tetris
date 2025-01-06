@@ -1,5 +1,5 @@
 class Tetris {
-    constructor(difficulty = 'medium') {
+    constructor(difficulty = 'medium', username = 'Player') {
         this.canvas = document.getElementById('tetris');
         this.ctx = this.canvas.getContext('2d');
         this.nextCanvas = document.getElementById('nextPiece');
@@ -385,6 +385,12 @@ class Tetris {
             }
         });
     }
+
+    gameOver() {
+        this.gameOver = true;
+        // Add score to high scores
+        addHighScore(this.username, this.score, this.level, this.difficulty);
+    }
 }
 
 // Main menu handling
@@ -393,11 +399,99 @@ function showMainMenu() {
     document.getElementById('game-container').style.display = 'none';
 }
 
+// High scores handling
+const HIGH_SCORES_KEY = 'tetrisHighScores';
+let currentDifficulty = 'easy';
+let highScores = {
+    easy: [],
+    medium: [],
+    hard: []
+};
+
+// Load high scores from localStorage
+function loadHighScores() {
+    const saved = localStorage.getItem(HIGH_SCORES_KEY);
+    if (saved) {
+        highScores = JSON.parse(saved);
+    }
+    updateHighScoreTable(currentDifficulty);
+}
+
+// Save high scores to localStorage
+function saveHighScores() {
+    localStorage.setItem(HIGH_SCORES_KEY, JSON.stringify(highScores));
+}
+
+// Update the high score table
+function updateHighScoreTable(difficulty) {
+    const tbody = document.getElementById('highScoreBody');
+    const scores = highScores[difficulty] || [];
+    
+    // Sort scores by score value
+    scores.sort((a, b) => b.score - a.score);
+    
+    // Keep only top 10 scores
+    while (scores.length > 10) {
+        scores.pop();
+    }
+    
+    // Update table
+    tbody.innerHTML = scores.map((score, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${score.username}</td>
+            <td>${score.score}</td>
+            <td>${score.level}</td>
+        </tr>
+    `).join('');
+}
+
+// Add new score
+function addHighScore(username, score, level, difficulty) {
+    if (!highScores[difficulty]) {
+        highScores[difficulty] = [];
+    }
+    
+    highScores[difficulty].push({ username, score, level });
+    highScores[difficulty].sort((a, b) => b.score - a.score);
+    
+    if (highScores[difficulty].length > 10) {
+        highScores[difficulty].pop();
+    }
+    
+    saveHighScores();
+    updateHighScoreTable(difficulty);
+}
+
+// Initialize tab controls
+document.querySelectorAll('.tab-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        // Update active tab
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Update table
+        currentDifficulty = button.getAttribute('data-difficulty');
+        updateHighScoreTable(currentDifficulty);
+    });
+});
+
+// Modified startGame function
 function startGame(difficulty) {
+    const username = document.getElementById('username').value.trim();
+    if (!username) {
+        alert('Please enter a username before starting the game!');
+        return;
+    }
+    
     document.getElementById('main-menu').style.display = 'none';
     document.getElementById('game-container').style.display = 'flex';
-    window.game = new Tetris(difficulty);
+    document.getElementById('currentPlayer').textContent = username;
+    window.game = new Tetris(difficulty, username);
 }
+
+// Load high scores when page loads
+loadHighScores();
 
 // Initialize menu controls
 document.querySelectorAll('.difficulty-btn').forEach(button => {

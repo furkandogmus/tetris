@@ -162,4 +162,90 @@ canvas {
 
 .score-animation {
     animation: scoreUpdate 0.3s ease-out;
+}
+
+.username-section {
+    margin-bottom: 2rem;
+}
+
+.username-section input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    width: 250px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.username-section input:focus {
+    outline: none;
+    border-color: #4a9eff;
+    background: rgba(74, 158, 255, 0.1);
+}
+
+.username-section input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.high-scores {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.high-scores h2 {
+    color: #4a9eff;
+    margin-bottom: 1rem;
+}
+
+.score-tabs {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.tab-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    background: #4a9eff;
+}
+
+.score-table {
+    overflow-x: auto;
+}
+
+#highScoreTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    color: #fff;
+}
+
+#highScoreTable th,
+#highScoreTable td {
+    padding: 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#highScoreTable th {
+    background: rgba(74, 158, 255, 0.1);
+    color: #4a9eff;
+}
+
+#highScoreTable tr:hover {
+    background: rgba(255, 255, 255, 0.05);
 } 
