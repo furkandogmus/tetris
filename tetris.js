@@ -62,6 +62,7 @@ class Tetris {
         this.ghostPieceY = 0;
         
         this.initializeControls();
+        this.initializeMobileControls();
         this.resetGame();
         this.update();
     }
@@ -390,6 +391,59 @@ class Tetris {
         this.gameOver = true;
         // Add score to high scores
         addHighScore(this.username, this.score, this.level, this.difficulty);
+    }
+
+    initializeMobileControls() {
+        // Helper function to handle both touch and mouse events
+        const addButtonControl = (id, action, isRepeatable = false) => {
+            const button = document.getElementById(id);
+            if (!button) return;
+
+            let intervalId = null;
+            const repeatDelay = 100; // Milliseconds between repeated actions
+
+            const startAction = (e) => {
+                e.preventDefault();
+                if (this.gameOver) return;
+                
+                action.call(this);
+                if (isRepeatable) {
+                    intervalId = setInterval(() => action.call(this), repeatDelay);
+                }
+            };
+
+            const stopAction = (e) => {
+                e.preventDefault();
+                if (intervalId) {
+                    clearInterval(intervalId);
+                    intervalId = null;
+                }
+            };
+
+            // Touch events
+            button.addEventListener('touchstart', startAction, { passive: false });
+            button.addEventListener('touchend', stopAction);
+            button.addEventListener('touchcancel', stopAction);
+
+            // Mouse events
+            button.addEventListener('mousedown', startAction);
+            button.addEventListener('mouseup', stopAction);
+            button.addEventListener('mouseleave', stopAction);
+        };
+
+        // Add controls for each button
+        addButtonControl('leftBtn', () => this.move(-1), true);
+        addButtonControl('rightBtn', () => this.move(1), true);
+        addButtonControl('downBtn', () => this.drop(), true);
+        addButtonControl('rotateBtn', () => this.rotatePiece());
+        addButtonControl('dropBtn', () => this.hardDrop());
+
+        // Prevent default touch behavior to avoid scrolling while playing
+        document.addEventListener('touchmove', (e) => {
+            if (e.target.closest('.mobile-controls')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     }
 }
 
